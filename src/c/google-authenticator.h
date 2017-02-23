@@ -26,6 +26,7 @@
 
 #define VERIFICATION_CODE_MODULUS (1000*1000) // Six digits
 #define BITS_PER_BASE32_CHAR      5           // Base32 expands space by 8/5
+#define STEAM_CHARS               "23456789BCDFGHJKMNPQRTVWXY"
 	
 char *generateCode(const char *key, int timezone_offset)
 	__attribute__((visibility("hidden")));

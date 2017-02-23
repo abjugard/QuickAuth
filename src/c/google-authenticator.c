@@ -26,7 +26,7 @@
 #include "sha1.h"
 #include "google-authenticator.h"
 
-char *generateCode(const char *key, int timezone_offset) {
+char *generateCode(const char *key, int timezone_offset, bool steam_code) {
 	
 	#ifdef PBL_SDK_2
 		long tm = (time(NULL) + (timezone_offset*60))/30;
@@ -74,6 +74,20 @@ char *generateCode(const char *key, int timezone_offset) {
 	
 	// Truncate to a smaller number of digits.
 	truncatedHash &= 0x7FFFFFFF;
+	
+	if (steam_code) {
+		static char steamText[6];
+
+		for(int i = 0; i <= 4; i++)
+		{
+			steamText[i] = STEAM_CHARS[truncatedHash % strlen(STEAM_CHARS)];
+			truncatedHash /= strlen(STEAM_CHARS);
+		}
+		steamText[5] = '\0';
+
+		return steamText;
+	}
+
 	truncatedHash %= VERIFICATION_CODE_MODULUS;
 
 	// Convert the truncatedHash int to a Char/String
